@@ -1,0 +1,185 @@
+fmod ENV-CONFIG is 
+  pr FLOAT + INT .
+  op egoAccel : -> Float .
+  op maxSpeed : -> Float .
+  op simulationStep : -> Float .
+  op maxY : -> Float .
+  op laneWidth : -> Float .
+  op laneChangeTime : -> Float .
+
+  eq egoAccel = 4.0 .
+  eq maxSpeed = 40.0 .
+  eq simulationStep = 1.0 / 4.0 .
+  eq maxY = 12.0 .
+  eq laneWidth = 4.0 .
+  eq laneChangeTime = 1.0 .
+endfm
+
+mod SYSTEM is
+  pr ENV-CONFIG + COMPUTATION + EGO-VEHICLE + STRING .
+  pr SET{Vehicle} * (op _,_ to _&_) .
+
+  sort Sys .
+
+  vars VEH VEH2 EGOV : Vehicle .
+  vars VEHs : Set{Vehicle} .
+  vars EGO EGO2 : Ego .
+  vars V V2 V3 V4 V5 P P2 : Vector2 .
+  vars ANGLE ANGLE2 X Y Z T ACC Ax Ay SPEED Vx Vy : Float .
+  vars ID ID2 STEP ACTION : Int .
+  vars STR : String .
+
+  ---        NPC concerned  Ego  NPCs
+  op _|_|_ : Int            Ego  Set{Vehicle} -> Sys [ctor] .
+
+  op idleOrNot : Ego -> Ego .
+  eq idleOrNot(veh(ID, P, V, ANGLE) # ACTION # T) = 
+      if T <= 0.001
+      then veh(ID, P, vector2(magnitude(V),0.0), 0.0) # 1 # infiniteF
+      else veh(ID, P, V, ANGLE) # ACTION # T
+      fi .
+
+  --- update the ego status based on its action
+  op advance : Ego -> Ego .
+
+  --- IDLE
+  eq advance(veh(ID, P, V, ANGLE) # 1 # T) =
+    veh(ID, P + V * simulationStep, V, ANGLE) # 1 # T .
+
+  --- FASTER
+  eq advance(veh(ID, P, V, ANGLE) # 3 # T) =
+    idleOrNot(veh(ID, newPosition(P, V, egoAccel, simulationStep), 
+                      newVelocity(   V, egoAccel, simulationStep), ANGLE)
+                  # 3 # (T - simulationStep)) .
+
+  --- SLOWER
+  eq advance(veh(ID, P, V, ANGLE) # 4 # T) =
+    idleOrNot(veh(ID, newPosition(P, V, - egoAccel, simulationStep), 
+                      newVelocity(   V, - egoAccel, simulationStep), ANGLE)
+                  # 4 # (T - simulationStep)) .
+
+  --- CHANGE LANE TO LEFT
+  ceq advance(veh(ID, P, V, ANGLE) # 0 # T) =
+      idleOrNot(veh(ID, newPosition(P, V2, 0.0, simulationStep), 
+                        V2, - radianToDegree(atan(Vy / Vx))) 
+                    # 0 # (T - simulationStep))
+    if Vy := laneWidth / laneChangeTime /\
+       Vx := sqrt(magnitudeSquare(V) - Vy * Vy) /\
+       V2 := vector2(Vx, Vy) .
+
+  --- CHANGE LANE TO RIGHT
+  ceq advance(veh(ID, P, V, ANGLE) # 2 # T) =
+      idleOrNot(veh(ID, newPosition(P, V2, 0.0, simulationStep), 
+                        V2, radianToDegree(atan(Vy / Vx)))
+                    # 2 # (T - simulationStep))
+    if Vy := laneWidth / laneChangeTime /\
+       Vx := sqrt(magnitudeSquare(V) - Vy * Vy) /\
+       V2 := vector2(Vx, - Vy) .
+
+  rl -1 | EGO | (veh(ID, P, V, ANGLE) & VEHs)
+  => ID | EGO | (veh(ID, P, V, ANGLE) & VEHs) .
+
+  --- NPC
+  rl [npc-idle] : 
+     ID | EGO          | (veh(ID, P, V, ANGLE) & VEHs)
+  => ID | advance(EGO) | (veh(ID, P + V * simulationStep, V, ANGLE) & VEHs) .
+
+  rl [npc-faster] : 
+     ID | EGO          | (veh(ID, P, V, ANGLE) & VEHs)
+  => ID | advance(EGO) | (veh(ID, newPosition(P, V, 5.0, simulationStep), 
+                                  newVelocity(   V, 5.0, simulationStep), ANGLE) & VEHs) .
+
+  rl [npc-slower] : 
+     ID | EGO          | (veh(ID, P, V, ANGLE) & VEHs)
+  => ID | advance(EGO) | (veh(ID, newPosition(P, V, - 5.0, simulationStep), 
+                                  newVelocity(   V, - 5.0, simulationStep), ANGLE) & VEHs) .
+
+  --- alias
+  ---              current position  current velocity  acceleration  time step
+  op newPosition : Vector2           Vector2           Float         Float -> Vector2 .
+  op newVelocity :                   Vector2           Float         Float -> Vector2 .
+
+  ceq newVelocity(V, ACC, T) = 
+      if x(V3) < 0.0
+      then vector2(0.0, 0.0)
+      else 
+        if magnitude(V3) > maxSpeed
+        then maxSpeed * normalize(V3)
+        else V3
+        fi
+      fi
+    if ACCEL:Vector2 := ACC * normalize(V) /\
+       V3 := V + ACCEL:Vector2 * T .
+
+  ceq newPosition(P, V, ACC, T) = 
+      if y(P2) > 0.0
+      then vector2(x(P2), 0.0)
+      else 
+        if y(P2) < - maxY
+        then vector2(x(P2), - maxY)
+        else P2
+        fi
+      fi
+    if V2 := newVelocity(V, ACC, T) /\
+       P2 := P + (0.5 * T) * (V + V2) .
+endm
+
+fmod PAIR{X :: TRIV, Y :: TRIV} is
+  sort Pair{X, Y} .
+  op <_;_> : X$Elt Y$Elt -> Pair{X, Y} .
+  op 1st : Pair{X, Y} -> X$Elt .
+  op 2nd : Pair{X, Y} -> Y$Elt .
+  var A : X$Elt .
+  var B : Y$Elt .
+  eq 1st(< A ; B >) = A .
+  eq 2nd(< A ; B >) = B .
+endfm
+
+in model-checker .
+
+mod PROPOSITIONS is
+  pr SYSTEM .
+  inc SATISFACTION .
+  pr PAIR{Float,Int} .
+
+  subsort Sys < State .
+  sort ComparableExp .
+
+  vars X Y Z SPEED DIS X2 T T2 T3 Y2 DELAY : Float .
+  vars V V2 V3 V4 P P2 : Vector2 .
+  vars ID ID2 STEP ACTION : Int .
+  vars S : Sys .
+  var PROP : Prop .
+  vars VEH VEH2 EGOV : Vehicle .
+  var VEHs : Set{Vehicle} .
+
+  op ttc : Sys -> Pair{Float, Int} .
+  op ttc : Sys Pair{Float, Int} -> Pair{Float,Int} .
+  eq ttc(S) = ttc(S, < infiniteF ; -1 >) .
+  eq ttc((ID2 | EGOV # ACTION # T3 | empty), < T ; ID >) = < T ; ID > .
+  ceq ttc((ID2 | EGOV # ACTION # T3 | (VEH & VEHs)), < T ; ID >) =
+      if collision(EGOV, VEH)
+      then < 0.0 ; id(VEH) >
+      else 
+        if T2 < T
+        then ttc((ID2 | EGOV # ACTION # T3 | VEHs), < T2 ; id(VEH) >)
+        else ttc((ID2 | EGOV # ACTION # T3 | VEHs), < T ; ID >)
+        fi
+      fi 
+    if T2 := ttc(EGOV, VEH) .
+
+  op _<_ : ComparableExp Float -> Prop .
+  op _>_ : ComparableExp Float -> Prop .
+  op _<=_ : ComparableExp Float -> Prop .
+  op _>=_ : ComparableExp Float -> Prop .
+  op ttc : -> ComparableExp .
+
+  ceq S |= ttc > X = true
+    if 1st(ttc(S)) > X .
+  ceq S |= ttc >= X = true
+    if 1st(ttc(S)) >= X .
+  ceq S |= ttc < X = true
+    if 1st(ttc(S)) < X .
+  ceq S |= ttc <= X = true
+    if 1st(ttc(S)) <= X .
+endm

@@ -1,0 +1,278 @@
+fmod VECTOR2 is
+  pr FLOAT .
+  sort Vector2 .
+  op vector2 : Float Float -> Vector2 [ctor] .
+
+  op _-_ : Vector2 Vector2 -> Vector2 [prec 33 gather (E e)] .
+  op _+_ : Vector2 Vector2 -> Vector2 [assoc comm prec 33] .
+  op _*_ : Float Vector2 -> Vector2 [prec 31] .
+  op _*_ : Vector2 Float -> Vector2 [prec 31] .
+  ops x y : Vector2 -> Float .
+  op distance : Vector2 Vector2 -> Float .
+  op magnitude : Vector2 -> Float .
+  op magnitudeSquare : Vector2 -> Float .
+  op dot : Vector2 Vector2 -> Float .
+  op normalize : Vector2 -> Vector2 .
+
+  vars CX CY ANGLE ANGLE2 PX PY C SI PX2 PY2 PX3 PY3 X X2 Y Y2 Z : Float .
+  vars V V2 V3 V4 V5 P P2 : Vector2 .
+
+  eq x(vector2(X,Y)) = X .
+  eq y(vector2(X,Y)) = Y .
+
+  eq (vector2(X, Y) + vector2(X2, Y2)) = vector2(X + X2, Y + Y2) .
+  eq (vector2(X, Y) - vector2(X2, Y2)) = vector2(X - X2, Y - Y2) .
+  eq C * vector2(X2, Y2) = vector2(C * X2, C * Y2) .
+  eq vector2(X2, Y2) * C = vector2(C * X2, C * Y2) .
+  eq magnitudeSquare(vector2(X,Y)) = (X * X + Y * Y) .
+  eq magnitude(V) = sqrt(magnitudeSquare(V)) .
+  eq distance(V, V2) = magnitude(V - V2) .
+  eq dot(vector2(X, Y), vector2(X2, Y2)) = X * X2 + Y * Y2 .
+  ceq normalize(vector2(X,Y)) = vector2(X / C, Y / C) 
+    if C := magnitude(vector2(X,Y)) .
+
+  op degreeToRadian : Float -> Float .
+  op radianToDegree : Float -> Float .
+  eq degreeToRadian(X) = (X / 180.0) * 3.14159 .
+  eq radianToDegree(X) = (X * 180.0) / 3.14159 .
+
+  --- Rotate counter-clockwise a point (px, py) around another point (cx, cy) by angle in degrees
+  ---              pivot   angle      point (to be rotated)
+  op rotatePoint : Vector2 Float Vector2 -> Vector2 .
+  ceq rotatePoint(vector2(CX,CY), ANGLE, vector2(PX,PY)) =
+      vector2(PX3 + CX, PY3 + CY)
+    if SI := sin(degreeToRadian(ANGLE)) /\
+       C := cos(degreeToRadian(ANGLE)) /\
+       PX2 := PX - CX /\
+       PY2 := PY - CY /\
+       PX3 := PX2 * C - PY2 * SI /\
+       PY3 := PX2 * SI + PY2 * C .
+
+  --- consts
+  op infiniteF : -> Float .
+  eq infiniteF = 1000000000.0 .
+endfm
+
+view Vector2 from TRIV to VECTOR2 is
+  sort Elt to Vector2 .
+endv
+
+fmod VEHICLE-CONFIG is 
+  pr FLOAT + INT .
+  ops vehLength vehWidth : -> Float .
+  eq vehLength = 5.0 .
+  eq vehWidth = 2.0 .
+endfm
+
+fmod VEHICLE is
+  pr LIST{Vector2} + VEHICLE-CONFIG .
+  sort Vehicle .
+  ---      ID   position  velocity  heading (degrees)
+  op veh : Int  Vector2   Vector2   Float  -> Vehicle [ctor] .
+
+  op id       : Vehicle -> Int .
+  op position : Vehicle -> Vector2 .
+  op velocity : Vehicle -> Vector2 .
+  op heading  : Vehicle -> Float .
+  op vertices : Vehicle -> List{Vector2} .
+  
+  vars V V2 V3 V4 V5 P P2 : Vector2 .
+  vars ANGLE ANGLE2 X Y Z : Float .
+  var ID : Int .
+
+  eq id(veh(ID,V,V2,ANGLE)) = ID .
+  eq position(veh(ID,V,V2,ANGLE)) = V .
+  eq velocity(veh(ID,V,V2,ANGLE)) = V2 .
+  eq heading(veh(ID,V,V2,ANGLE)) = ANGLE .
+
+  ---                  root position  heading
+  op frontLeftPoint  : Vector2        Float -> Vector2 .
+  op frontRightPoint : Vector2        Float -> Vector2 .
+  op backLeftPoint   : Vector2        Float -> Vector2 .
+  op backRightPoint  : Vector2        Float -> Vector2 .
+  eq frontLeftPoint(P, ANGLE) = 
+      rotatePoint(vector2(0.0, 0.0),
+                  ANGLE,
+                  vector2(vehLength / 2.0, vehWidth / 2.0)) +
+      P .
+  eq frontRightPoint(P, ANGLE) = 
+      rotatePoint(vector2(0.0, 0.0),
+                  ANGLE,
+                  vector2(vehLength / 2.0, - vehWidth / 2.0)) +
+      P .
+  eq backLeftPoint(P, ANGLE) = 
+      rotatePoint(vector2(0.0, 0.0),
+                  ANGLE,
+                  vector2(- vehLength / 2.0, vehWidth / 2.0)) +
+      P .
+  eq backRightPoint(P, ANGLE) = 
+      rotatePoint(vector2(0.0, 0.0),
+                  ANGLE,
+                  vector2(- vehLength / 2.0, - vehWidth / 2.0)) +
+      P .
+
+  eq vertices(veh(ID, P, V, ANGLE)) =
+      backLeftPoint(P, ANGLE)
+      backRightPoint(P, ANGLE)
+      frontRightPoint(P, ANGLE)
+      frontLeftPoint(P, ANGLE) .
+endfm
+
+view Vehicle from TRIV to VEHICLE is
+  sort Elt to Vehicle .
+endv
+
+fmod COMPUTATION is
+  pr VEHICLE .
+
+  vars V V2 V3 V4 V5 P P1 P2 P3 P4 P0 D D2 M M1 M2 M3 M4 M5 M6 M7 M8 A B : Vector2 .
+  vars ANGLE ANGLE2 X Y Z X2 X3 X4 Ax Ay Bx By Cx Cy Dx Dy T S1 S2 S3 S4 S0 : Float .
+  vars VERTICES VERTICES2 VERTICES3 VERTICES4 MS AS : List{Vector2} .
+  vars ID ID2 : Int .
+  vars VEH VEH2 : Vehicle .
+
+  --- check two rects defined by two list of vertices collide
+  op collision : Vehicle Vehicle -> Bool .
+  op collision : List{Vector2} List{Vector2} -> Bool .
+  eq collision(VEH, VEH2) = collision(vertices(VEH), vertices(VEH2)) .
+  eq collision(M1 M2 M3 M4,   M5 M6 M7 M8) =
+      pointInRect(M1,  M5 M6 M7 M8) or
+      pointInRect(M2,  M5 M6 M7 M8) or
+      pointInRect(M3,  M5 M6 M7 M8) or
+      pointInRect(M4,  M5 M6 M7 M8) or
+      pointInRect(M5,  M1 M2 M3 M4) or
+      pointInRect(M6,  M1 M2 M3 M4) or
+      pointInRect(M7,  M1 M2 M3 M4) or
+      pointInRect(M8,  M1 M2 M3 M4) .
+
+  --- triangle area. 
+  --- given a triangle ABC, S_ABC = 1/2 * abs((BX - AX) * (CY - AY) - (CX - AX) * (BY - AY))
+  op triangleArea : List{Vector2} -> Float .
+  ceq triangleArea(vector2(Ax,Ay) vector2(Bx,By) vector2(Cx,Cy)) =
+      0.5 * abs(X * X2 - X3 * X4)
+    if X := Bx - Ax /\
+       X2 := Cy - Ay /\
+       X3 := Cx - Ax /\
+       X4 := By - Ay .
+
+  --- if a point inside (or on line) of rectangle
+  op pointInRect : Vector2 List{Vector2} -> Bool .
+  ceq pointInRect(P0,  P1 P2 P3 P4) =
+      S1 + S2 + S3 + S4 <= S0
+    if S1 := triangleArea(P0 P1 P2) /\
+       S2 := triangleArea(P0 P2 P3) /\
+       S3 := triangleArea(P0 P3 P4) /\
+       S4 := triangleArea(P0 P4 P1) /\
+       S0 := distance(P1,P2) * distance(P2,P3) .
+
+  --- fast TTC computation, following https://github.com/Yiru-Jiao/Two-Dimensional-Time-To-Collision
+  op ttc : Vehicle Vehicle -> Float .
+  op ttc : List{Vector2} Vector2 List{Vector2} Vector2 -> Float .
+  ceq ttc(VEH, VEH2) =
+      ttc(VERTICES, V, VERTICES2, V2) 
+    if VERTICES := vertices(VEH) /\
+       VERTICES2 := vertices(VEH2) /\
+       V := velocity(VEH) /\
+       V2 := velocity(VEH2) .
+
+  ceq ttc(VERTICES, D, VERTICES2, D2) =
+      if X3 == infiniteF
+      then infiniteF
+      else X3 / magnitude(D - D2)
+      fi
+    if X := dtc(VERTICES, D, VERTICES2, D2) /\
+       X2 := dtc(VERTICES2, D2, VERTICES, D) /\
+       X3 := min(X,X2) .
+
+  --- compute DTC from the first vehicle to the second vehicle
+  ---      vertices_i    v_i     vertices_j    v_j
+  op dtc : List{Vector2} Vector2 List{Vector2} Vector2 -> Float .
+  ---                    v_i - v_j vertices_j    min_dtc
+  op dtc : List{Vector2} Vector2   List{Vector2} Float -> Float .
+  eq dtc(M1 M2 M3 M4, D, M5 M6 M7 M8, D2) =
+     dtc(M1 M2 M3 M4, D - D2, M5 M6 M7 M8, infiniteF) .
+  eq dtc(nil, D, M5 M6 M7 M8, X) = X .
+  ceq dtc(M MS, D, M5 M6 M7 M8, X) =
+      if AS == nil
+      then dtc(MS, D, M5 M6 M7 M8, X)
+      else
+        if dot(head(AS) - M, D) >= 0.0
+        then 
+          if distance(head(AS), M) < X
+          then dtc(MS, D, M5 M6 M7 M8, distance(head(AS), M))
+          else dtc(MS, D, M5 M6 M7 M8, X)
+          fi
+        else dtc(MS, D, M5 M6 M7 M8, X)
+        fi 
+      fi
+    if AS := find-kj(M, D, M5 M6 M7 M8) .
+
+  --- intersection between line AB and line passing M(X,Y) and direction (Dx,Dy)
+  ---                    point A  point B  ray      ray direction
+  op linesIntersection : Vector2  Vector2  Vector2  Vector2 -> Vector2 .
+  ceq linesIntersection(vector2(Ax,Ay), vector2(Bx,By), vector2(X,Y), vector2(Dx,Dy)) = vector2(infiniteF, infiniteF)
+    if DENOM:Float := (Bx - Ax) * Dy - (By - Ay) * Dx /\
+       abs(DENOM:Float) <= 1.0e-6 .
+  ceq linesIntersection(vector2(Ax,Ay), vector2(Bx,By), vector2(X,Y), vector2(Dx,Dy)) =
+      vector2(
+        Ax + T * (Bx - Ax),
+        Ay + T * (By - Ay)
+      )
+    if DENOM:Float := (Bx - Ax) * Dy - (By - Ay) * Dx /\
+       abs(DENOM:Float) > 1.0e-6 /\
+       TNUM:Float := (X - Ax) * Dy - (Y - Ay) * Dx /\
+       T := TNUM:Float / DENOM:Float .
+
+  --- only return point if it on the ray and between two points A and B
+  ---                      point A  point B  ray      ray direction
+  op lineRayIntersection : Vector2  Vector2  Vector2  Vector2 -> List{Vector2} .
+  ceq lineRayIntersection(A, B, M, D) = 
+      if (X == infiniteF and Y == infiniteF)
+      then nil
+      else 
+        if dot(D, vector2(X,Y) - M) < 0.0
+        then nil
+        else
+          if dot(A - vector2(X,Y), B - vector2(X,Y)) > 0.0
+          then nil
+          else vector2(X,Y)
+          fi
+        fi
+      fi
+    if vector2(X,Y) := linesIntersection(A,B,M,D) .
+
+  --- interection between the ray formed by vertex and the subtracted velocity and the other vehicle (i.e., find k_j for each given c_i)
+  --- return the point if exists, otherwise, return nil
+  ---          c_i     v_ij    vertices of the other vehicle
+  op find-kj : Vector2 Vector2 List{Vector2} -> List{Vector2} .
+  ceq find-kj(A, B, M1 M2 M3 M4) =
+      if MS == nil
+      then nil
+      else findPointWithMinDis(A, MS)
+      fi
+    if MS := lineRayIntersection(M1, M2, A, B) 
+             lineRayIntersection(M2, M3, A, B)
+             lineRayIntersection(M3, M4, A, B)
+             lineRayIntersection(M4, M1, A, B) .
+  
+  --- find a point has smallest distance to point A from the non-nil point list MS
+  op findPointWithMinDis : Vector2 List{Vector2} -> Vector2 .
+  op findPointWithMinDis : Vector2 List{Vector2} Float Vector2 -> Vector2 .
+  eq findPointWithMinDis(A, M MS) = 
+    findPointWithMinDis(A, MS, distance(A,M), M) .
+  eq findPointWithMinDis(A, nil, X, M) = M .
+  ceq findPointWithMinDis(A, M2 MS, X, M) = 
+      if X2 < X 
+      then findPointWithMinDis(A, MS, X2, M2) 
+      else findPointWithMinDis(A, MS, X, M)
+      fi
+    if X2 := distance(A, M2) .
+endfm
+
+fmod EGO-VEHICLE is
+  pr VEHICLE .
+  sort Ego .
+
+  ---                action ID  time remaining
+  op _#_#_ : Vehicle Int        Float -> Ego [ctor] . 
+endfm
