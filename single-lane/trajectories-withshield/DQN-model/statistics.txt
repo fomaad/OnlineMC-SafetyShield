@@ -1,0 +1,5 @@
+single-lane/trajectories-withshield/DQN-model/trajectories-5.yaml: [0.0, 0.0, 1.0] (num: 3848, min: 3.04816955684008, max: 5099.545454545812, mean: 24.79668449502128, median: 11.0, std: 138.5247018459847)
+single-lane/trajectories-withshield/DQN-model/trajectories-4.yaml: [0.0, 0.0, 1.0] (num: 3823, min: 2.9259443339960196, max: 17495.399999997273, mean: 31.3900786027998, median: 10.0, std: 365.86292559862943)
+single-lane/trajectories-withshield/DQN-model/trajectories-3.yaml: [0.0, 0.0, 1.0] (num: 3893, min: 2.9413394166530864, max: 7488.090909091429, mean: 26.832017071489744, median: 11.0, std: 186.01728386392713)
+single-lane/trajectories-withshield/DQN-model/trajectories-2.yaml: [0.0, 0.0, 1.0] (num: 3858, min: 2.9416981441944507, max: 7537.583333334165, mean: 27.94778651191712, median: 10.0, std: 192.283989208703)
+single-lane/trajectories-withshield/DQN-model/trajectories-1.yaml: [0.0, 0.0, 1.0] (num: 3864, min: 3.2251488363701935, max: 19214.00000001062, mean: 29.227025886849514, median: 11.0, std: 334.16185153638634)
