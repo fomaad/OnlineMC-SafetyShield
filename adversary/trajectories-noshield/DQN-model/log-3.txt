@@ -1,0 +1,412 @@
+Trajectories will be saved to trajectories-3.yaml
+
+ Test run #0
+Number of crashes: 1
+
+ Test run #1
+
+ Test run #2
+
+ Test run #3
+
+ Test run #4
+
+ Test run #5
+
+ Test run #6
+
+ Test run #7
+
+ Test run #8
+
+ Test run #9
+
+ Test run #10
+
+ Test run #11
+
+ Test run #12
+
+ Test run #13
+
+ Test run #14
+
+ Test run #15
+
+ Test run #16
+
+ Test run #17
+
+ Test run #18
+
+ Test run #19
+
+ Test run #20
+Number of crashes: 20
+
+ Test run #21
+
+ Test run #22
+
+ Test run #23
+
+ Test run #24
+
+ Test run #25
+
+ Test run #26
+
+ Test run #27
+
+ Test run #28
+
+ Test run #29
+
+ Test run #30
+
+ Test run #31
+
+ Test run #32
+
+ Test run #33
+
+ Test run #34
+
+ Test run #35
+
+ Test run #36
+
+ Test run #37
+
+ Test run #38
+
+ Test run #39
+
+ Test run #40
+Number of crashes: 40
+
+ Test run #41
+
+ Test run #42
+
+ Test run #43
+
+ Test run #44
+
+ Test run #45
+
+ Test run #46
+
+ Test run #47
+
+ Test run #48
+
+ Test run #49
+
+ Test run #50
+
+ Test run #51
+
+ Test run #52
+
+ Test run #53
+
+ Test run #54
+
+ Test run #55
+
+ Test run #56
+
+ Test run #57
+
+ Test run #58
+
+ Test run #59
+
+ Test run #60
+Number of crashes: 59
+
+ Test run #61
+
+ Test run #62
+
+ Test run #63
+
+ Test run #64
+
+ Test run #65
+
+ Test run #66
+
+ Test run #67
+
+ Test run #68
+
+ Test run #69
+
+ Test run #70
+
+ Test run #71
+
+ Test run #72
+
+ Test run #73
+
+ Test run #74
+
+ Test run #75
+
+ Test run #76
+
+ Test run #77
+
+ Test run #78
+
+ Test run #79
+
+ Test run #80
+Number of crashes: 78
+
+ Test run #81
+
+ Test run #82
+
+ Test run #83
+
+ Test run #84
+
+ Test run #85
+
+ Test run #86
+
+ Test run #87
+
+ Test run #88
+
+ Test run #89
+
+ Test run #90
+
+ Test run #91
+
+ Test run #92
+
+ Test run #93
+
+ Test run #94
+
+ Test run #95
+
+ Test run #96
+
+ Test run #97
+
+ Test run #98
+
+ Test run #99
+
+ Test run #100
+Number of crashes: 98
+
+ Test run #101
+
+ Test run #102
+
+ Test run #103
+
+ Test run #104
+
+ Test run #105
+
+ Test run #106
+
+ Test run #107
+
+ Test run #108
+
+ Test run #109
+
+ Test run #110
+
+ Test run #111
+
+ Test run #112
+
+ Test run #113
+
+ Test run #114
+
+ Test run #115
+
+ Test run #116
+
+ Test run #117
+
+ Test run #118
+
+ Test run #119
+
+ Test run #120
+Number of crashes: 116
+
+ Test run #121
+
+ Test run #122
+
+ Test run #123
+
+ Test run #124
+
+ Test run #125
+
+ Test run #126
+
+ Test run #127
+
+ Test run #128
+
+ Test run #129
+
+ Test run #130
+
+ Test run #131
+
+ Test run #132
+
+ Test run #133
+
+ Test run #134
+
+ Test run #135
+
+ Test run #136
+
+ Test run #137
+
+ Test run #138
+
+ Test run #139
+
+ Test run #140
+Number of crashes: 135
+
+ Test run #141
+
+ Test run #142
+
+ Test run #143
+
+ Test run #144
+
+ Test run #145
+
+ Test run #146
+
+ Test run #147
+
+ Test run #148
+
+ Test run #149
+
+ Test run #150
+
+ Test run #151
+
+ Test run #152
+
+ Test run #153
+
+ Test run #154
+
+ Test run #155
+
+ Test run #156
+
+ Test run #157
+
+ Test run #158
+
+ Test run #159
+
+ Test run #160
+Number of crashes: 154
+
+ Test run #161
+
+ Test run #162
+
+ Test run #163
+
+ Test run #164
+
+ Test run #165
+
+ Test run #166
+
+ Test run #167
+
+ Test run #168
+
+ Test run #169
+
+ Test run #170
+
+ Test run #171
+
+ Test run #172
+
+ Test run #173
+
+ Test run #174
+
+ Test run #175
+
+ Test run #176
+
+ Test run #177
+
+ Test run #178
+
+ Test run #179
+
+ Test run #180
+Number of crashes: 174
+
+ Test run #181
+
+ Test run #182
+
+ Test run #183
+
+ Test run #184
+
+ Test run #185
+
+ Test run #186
+
+ Test run #187
+
+ Test run #188
+
+ Test run #189
+
+ Test run #190
+
+ Test run #191
+
+ Test run #192
+
+ Test run #193
+
+ Test run #194
+
+ Test run #195
+
+ Test run #196
+
+ Test run #197
+
+ Test run #198
+
+ Test run #199
+Crashes: 193 / 200 runs (96.5 %)
