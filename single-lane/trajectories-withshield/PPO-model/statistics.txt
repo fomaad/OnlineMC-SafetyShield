@@ -1,0 +1,5 @@
+single-lane/trajectories-withshield/PPO-model/trajectories-5.yaml: [0.0, 0.0, 1.0] (num: 3848, min: 3.762091503267978, max: 30507.50000000336, mean: 33.78480159774356, median: 11.0, std: 524.2368853859458)
+single-lane/trajectories-withshield/PPO-model/trajectories-4.yaml: [0.0, 0.0, 1.0] (num: 3843, min: 3.6924019607843164, max: 19238.3333333326, mean: 29.2322435503931, median: 11.0, std: 343.30844298752555)
+single-lane/trajectories-withshield/PPO-model/trajectories-3.yaml: [0.0, 0.0, 1.0] (num: 3826, min: 3.2907749077490744, max: 2280.594594594654, mean: 21.986545429090224, median: 10.0, std: 78.68579660096522)
+single-lane/trajectories-withshield/PPO-model/trajectories-2.yaml: [0.0, 0.0, 1.0] (num: 3852, min: 3.241020966271653, max: 10457.499999996504, mean: 26.323932438724086, median: 11.0, std: 203.8560204712097)
+single-lane/trajectories-withshield/PPO-model/trajectories-1.yaml: [0.0, 0.0, 1.0] (num: 3848, min: 3.681783824640967, max: 4620.36363636396, mean: 25.449709189390095, median: 11.0, std: 133.08709692669373)

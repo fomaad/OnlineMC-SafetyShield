@@ -6,12 +6,13 @@ import warnings
 import TwoDimTTC
 import pandas as pd
 import yaml
+import numpy as np
 
 # state_info is {'timeStamp': time_stamp, 'ego': ego, 'npcs': npcs}
 def minTTC(state_info):
     ego = state_info['ego']
     npcs = state_info['npcs']
-    ttc = 1e9
+    ttc = np.inf
     for npc in npcs:
         temp = fastTTC(ego,npc)
         if temp < ttc:
@@ -56,6 +57,7 @@ def ttcAnalyze(trajectories_file):
         try:
             trajectories = yaml.load(stream, Loader=yaml.Loader)
             distr = [0,0,0]
+            ttc_list = []
             for id, test in enumerate(trajectories['trajectories']):
                 trajectory = test['test-' + str(id)]
                 for state in trajectory:
@@ -66,24 +68,31 @@ def ttcAnalyze(trajectories_file):
                         distr[1] += 1
                     else:
                         distr[2] += 1
+                    if ttc != np.inf:
+                        ttc_list.append(ttc)
 
             s = sum(distr)
-            return [i/s for i in distr]
+            return ([i/s for i in distr], len(ttc_list), np.min(ttc_list), np.max(ttc_list), np.mean(ttc_list), np.median(np.rint(ttc_list)), np.std(ttc_list))
 
         except yaml.YAMLError as exc:
             print(exc)
 
-def ttcAnalyzeMulFile(directory):
+def ttcAnalyzeMulFile(directory, verbose=False):
     for file in os.listdir(directory):
         if file.endswith(".yaml"):
             tracefile = os.path.join(directory, file)
-            print(f"{tracefile}: {ttcAnalyze(tracefile)}")
+            result = ttcAnalyze(tracefile)
+            if verbose:
+                print(f"{tracefile}: {result[0]} (num: {result[1]}, min: {result[2]}, max: {result[3]}, mean: {result[4]}, median: {result[5]}, std: {result[6]})")
+            else:
+                print(f"{tracefile}: {result[0]}")
 
 if __name__ == '__main__':
-    # deault = "trajectories.yaml"
-    # if len(sys.argv) > 1:
-    #     deault = sys.argv[1]
-    #     print(ttcAnalyze(deault))
+    import argparse
 
-    dir = sys.argv[1]
-    ttcAnalyzeMulFile(dir)
+    parser = argparse.ArgumentParser(description='TTC Analysis Tool')
+    parser.add_argument('directory', type=str, help='directory containing trajectory YAML files')
+    parser.add_argument('-v', '--verbose', action='store_true', help='enable verbose output')
+
+    args = parser.parse_args()
+    ttcAnalyzeMulFile(args.directory, args.verbose)
