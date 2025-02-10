@@ -7,7 +7,6 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import SubprocVecEnv
 
-import highway_env
 from highway_env.envs.common.abstract import AbstractEnv
 from highway_env.road.lane import AbstractLane
 import utils
@@ -71,9 +70,6 @@ def test():
     env_config["simulation_frequency"] = 15
     env.configure(env_config)
     env.reset()
-
-    env.training = False  # Disable normalization updates
-    env.norm_reward = False
 
     filename = utils.get_filename_arg(trajectory_file_name)
     dx_range = AbstractEnv.PERCEPTION_DISTANCE

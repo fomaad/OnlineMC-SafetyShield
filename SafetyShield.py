@@ -1,5 +1,4 @@
 import gymnasium as gym
-import highway_env
 import maude
 import math
 from highway_env.road.lane import AbstractLane
@@ -27,19 +26,6 @@ def current_ttc(propMod, stateTerm):
         return ttc,id
     except ValueError:
         print(f"[Exception]: TTC computation failed ({current_ttc})")
-
-def samelane(y1, y2):
-    return math.fabs(y1-y2) < AbstractLane.DEFAULT_WIDTH/2
-
-# $searchResult is tuple of 4 elements
-def npc_concern(searchResult):
-    foundState = searchResult[0]
-    idT = next(foundState.arguments())
-    try:
-        return int(str(idT))
-    except ValueError:
-        print(f"[Exception]: TTC computation failed ({current_ttc})")
-        return -1000
 
 def choose_action(env, actionList, state_info):
     discardedActions = []
