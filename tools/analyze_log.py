@@ -62,19 +62,19 @@ def analyze_log(file_path):
 
     print(f"\nTotal actions: {total_processed_actions}\n")
 
-    # print("Lane Change Actions:")
+    print("Lane Change Actions:")
     for action in lane_actions:
         print(f"\nAction: {action}")
         for status in ['passed', 'discarded_due_to_unsafe', 'discarded_due_to_unavailable', 'ignored']:
             count = counts[action].get(status, 0)
             print(f"  {status}: {count}")
 
-    # print("\nOther Actions:")
-    # for action in other_actions:
-    #     print(f"\nAction: {action}")
-    #     for status in ['passed', 'discarded_due_to_unsafe', 'discarded_due_to_unavailable', 'ignored']:
-    #         count = counts[action].get(status, 0)
-    #         print(f"  {status}: {count}")
+    print("\nOther Actions:")
+    for action in other_actions:
+        print(f"\nAction: {action}")
+        for status in ['passed', 'discarded_due_to_unsafe', 'discarded_due_to_unavailable', 'ignored']:
+            count = counts[action].get(status, 0)
+            print(f"  {status}: {count}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Analyze log file.')
