@@ -75,6 +75,7 @@ def do_test(env, model, test_runs, reshape=False, shield_enable=False,
         done = False
         truncated = False
         step = 0
+        test_reward = 0
         trajectory = []
 
         ego_vehicle = env.unwrapped.vehicle
@@ -115,7 +116,7 @@ def do_test(env, model, test_runs, reshape=False, shield_enable=False,
             # apply the action
             next_state, reward, done, truncated, info = env.step(new_action)
             state = next_state
-            total_reward += float(reward)
+            test_reward += float(reward)
             env.render()
 
             # write state after $action was applied
@@ -126,7 +127,13 @@ def do_test(env, model, test_runs, reshape=False, shield_enable=False,
             if info and info['crashed']:
                 crashed_runs.append(k)
 
-        trajectories.append({f"test-{k}": trajectory})
+        total_reward += test_reward
+        trajectories.append({
+            f"test-{k}": {
+                "trajectory": trajectory,
+                "reward": test_reward,
+            }
+        })
 
         # debug
         if k % 20 == 0:
@@ -139,7 +146,7 @@ def write_trajectories(trajectories, crashed_runs, total_reward, filename):
             yaml.dump({
                 'trajectories': trajectories,
                 'crashed-test': crashed_runs,
-                'reward': total_reward,
+                'total-reward': total_reward,
             },
                 yaml_file, default_flow_style=False, sort_keys=False)
     except IOError as e:

@@ -51,7 +51,7 @@ def train():
     model.save(model_path)
 
 RECORD_TRAJECTORIES = True
-SAFETY_SHIELD_ENABLE = False
+SAFETY_SHIELD_ENABLE = True
 trajectory_file_name = "trajectories.yaml"
 
 if SAFETY_SHIELD_ENABLE:
