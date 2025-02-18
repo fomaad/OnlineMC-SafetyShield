@@ -59,7 +59,7 @@ def ttcAnalyze(trajectories_file):
             distr = [0,0,0]
             ttc_list = []
             for id, test in enumerate(trajectories['trajectories']):
-                trajectory = test['test-' + str(id)]
+                trajectory = test['test-' + str(id)]['trajectory']
                 for state in trajectory:
                     ttc = minTTC(state)
                     if ttc < 1:
@@ -78,6 +78,7 @@ def ttcAnalyze(trajectories_file):
             print(exc)
 
 def ttcAnalyzeMulFile(directory, verbose=False):
+    results = []
     for file in os.listdir(directory):
         if file.endswith(".yaml"):
             tracefile = os.path.join(directory, file)
@@ -86,6 +87,11 @@ def ttcAnalyzeMulFile(directory, verbose=False):
                 print(f"{tracefile}: {result[0]} (num: {result[1]}, min: {result[2]}, max: {result[3]}, mean: {result[4]}, median: {result[5]}, std: {result[6]})")
             else:
                 print(f"{tracefile}: {result[0]}")
+            results.append(result[0])
+
+
+    print(f"TTC < 1, 1 <= TTC < 2, TTC >= 2 dis: {np.mean(np.array(results), axis=0)}")
+
 
 if __name__ == '__main__':
     import argparse

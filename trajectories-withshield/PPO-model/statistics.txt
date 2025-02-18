@@ -1,5 +1,46 @@
-trajectories-withshield/PPO-model/trajectories-5.yaml: [0.0006451612903225806, 0.0014516129032258066, 0.9979032258064516] (num: 2675, min: 0.06395862544744493, max: 38673.50000002125, mean: 130.8347788612151, median: 19.0, std: 1103.5857050591092)
-trajectories-withshield/PPO-model/trajectories-4.yaml: [0.0016129032258064516, 0.0032258064516129032, 0.9951612903225806] (num: 2735, min: 0.3502591932336963, max: 42268.000000098706, mean: 156.36015803839106, median: 21.0, std: 1152.1896874411188)
-trajectories-withshield/PPO-model/trajectories-3.yaml: [0.0016129032258064516, 0.002096774193548387, 0.9962903225806452] (num: 2676, min: 0.32663776718022186, max: 11386.250000006314, mean: 94.55719161544798, median: 18.0, std: 418.6092775958878)
-trajectories-withshield/PPO-model/trajectories-2.yaml: [0.0008064516129032258, 0.002903225806451613, 0.9962903225806452] (num: 2753, min: 0.44656859898643836, max: 67696.99999991733, mean: 149.27330643641093, median: 20.0, std: 1647.3427439470452)
-trajectories-withshield/PPO-model/trajectories-1.yaml: [0.0012903225806451613, 0.0017741935483870969, 0.9969354838709678] (num: 2696, min: 0.43028829318128187, max: 27703.666666665613, mean: 133.11720850059498, median: 21.0, std: 878.3405853233004)
+Distances:
+num: 1000, mean: 630.5198889999999, std: 37.099163185989504, max: 770.4380000000001, min: 540.95
+Speeds:
+num: 1000, mean: 21.017329633333336, std: 1.2366387728663168, max: 25.68126666666667, min: 18.03166666666667
+Rewards:
+num: 1000, mean: 23.082110715863003, std: 0.5703592067467399, max: 24.88274141440531, min: 21.297462658721546
+
+
+TTC < 1, 1 <= TTC < 2, TTC >= 2 dis: [0.001      0.00196774 0.99703226]
+
+
+Total actions: 30000
+
+Lane Change Actions:
+
+Action: LANE_LEFT
+  passed: 0
+  discarded_due_to_unsafe: 0
+  discarded_due_to_unavailable: 0
+  ignored: 0
+
+Action: LANE_RIGHT
+  passed: 1867
+  discarded_due_to_unsafe: 2358
+  discarded_due_to_unavailable: 2925
+  ignored: 0
+
+Other Actions:
+
+Action: FASTER
+  passed: 7125
+  discarded_due_to_unsafe: 3078
+  discarded_due_to_unavailable: 0
+  ignored: 0
+
+Action: SLOWER
+  passed: 0
+  discarded_due_to_unsafe: 0
+  discarded_due_to_unavailable: 0
+  ignored: 6620
+
+Action: IDLE
+  passed: 5747
+  discarded_due_to_unsafe: 280
+  discarded_due_to_unavailable: 0
+  ignored: 0

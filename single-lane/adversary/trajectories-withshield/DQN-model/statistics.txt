@@ -1,9 +1,9 @@
 Distances:
-num: 1000, mean: 405.86170699999997, std: 7.865238304536679, max: 426.498, min: 383.573
+num: 1000, mean: 405.72888100000006, std: 8.002145880627207, max: 428.50000000000006, min: 378.91499999999996
 Speeds:
-num: 1000, mean: 13.528723566666667, std: 0.2621746101512227, max: 14.2166, min: 12.785766666666666
+num: 1000, mean: 13.524296033333334, std: 0.26673819602090687, max: 14.283333333333335, min: 12.6305
 Rewards:
-num: 1000, mean: 20.012614677399032, std: 0.10003048400773393, max: 20.277902390735992, min: 19.72430977978044
+num: 1000, mean: -9.954448573924786, std: 0.40408121767993394, max: -8.854008666104717, min: -11.346879365428386
 
 
 TTC < 1, 1 <= TTC < 2, TTC >= 2 dis: [0. 0. 1.]
@@ -22,14 +22,14 @@ Action: LANE_LEFT
 Action: LANE_RIGHT
   passed: 0
   discarded_due_to_unsafe: 0
-  discarded_due_to_unavailable: 1
+  discarded_due_to_unavailable: 0
   ignored: 0
 
 Other Actions:
 
 Action: FASTER
-  passed: 7408
-  discarded_due_to_unsafe: 6497
+  passed: 7597
+  discarded_due_to_unsafe: 22401
   discarded_due_to_unavailable: 0
   ignored: 0
 
@@ -37,10 +37,10 @@ Action: SLOWER
   passed: 0
   discarded_due_to_unsafe: 0
   discarded_due_to_unavailable: 0
-  ignored: 427
+  ignored: 0
 
 Action: IDLE
-  passed: 6676
-  discarded_due_to_unsafe: 8991
+  passed: 2
+  discarded_due_to_unsafe: 0
   discarded_due_to_unavailable: 0
   ignored: 0

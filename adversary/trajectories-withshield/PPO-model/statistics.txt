@@ -1,5 +1,46 @@
-adversary/trajectories-withshield/PPO-model/trajectories-5.yaml: [0.004608294930875576, 0.008229098090849244, 0.9871626069782752] (num: 3248, min: -1.0, max: 28340.999999965486, mean: 106.92745072292072, median: 10.0, std: 980.2910914218332)
-adversary/trajectories-withshield/PPO-model/trajectories-4.yaml: [0.003938946331856229, 0.006072542261611686, 0.9899885114065321] (num: 3240, min: -1.0, max: 12977.999999984035, mean: 63.88345243042427, median: 10.0, std: 389.511583262368)
-adversary/trajectories-withshield/PPO-model/trajectories-3.yaml: [0.004947229551451188, 0.005936675461741424, 0.9891160949868074] (num: 3346, min: -1.0, max: 11520.000000006366, mean: 80.15213131163429, median: 11.0, std: 411.39524383312875)
-adversary/trajectories-withshield/PPO-model/trajectories-2.yaml: [0.0024449877750611247, 0.0052159739201303994, 0.9923390383048085] (num: 3400, min: -1.0, max: 27789.999999965545, mean: 109.30423800733807, median: 10.0, std: 933.5599425837997)
-adversary/trajectories-withshield/PPO-model/trajectories-1.yaml: [0.0037465385241896073, 0.005375468317315524, 0.9908779931584949] (num: 3368, min: -1.0, max: 25372.999999969037, mean: 83.37481362509631, median: 10.0, std: 689.2125870132809)
+Distances:
+num: 1000, mean: 678.7343549999999, std: 62.064051124052284, max: 932.003, min: 209.32200000000003
+Speeds:
+num: 1000, mean: 22.80141643961039, std: 1.6726803336832428, max: 33.087428571428575, min: 19.840600000000002
+Rewards:
+num: 1000, mean: 4.079195794832327, std: 2.340147892676385, max: 16.702382605818944, min: -0.40594599273743004
+
+
+TTC < 1, 1 <= TTC < 2, TTC >= 2 dis: [0.003412   0.00623118 0.99035682]
+
+
+Total actions: 29812
+
+Lane Change Actions:
+
+Action: LANE_LEFT
+  passed: 755
+  discarded_due_to_unsafe: 2544
+  discarded_due_to_unavailable: 9
+  ignored: 0
+
+Action: LANE_RIGHT
+  passed: 864
+  discarded_due_to_unsafe: 3027
+  discarded_due_to_unavailable: 3
+  ignored: 0
+
+Other Actions:
+
+Action: FASTER
+  passed: 6932
+  discarded_due_to_unsafe: 15126
+  discarded_due_to_unavailable: 526
+  ignored: 0
+
+Action: SLOWER
+  passed: 0
+  discarded_due_to_unsafe: 0
+  discarded_due_to_unavailable: 0
+  ignored: 18
+
+Action: IDLE
+  passed: 8
+  discarded_due_to_unsafe: 0
+  discarded_due_to_unavailable: 0
+  ignored: 0
