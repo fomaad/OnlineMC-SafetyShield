@@ -4,6 +4,7 @@ A safety shield for AI-driven Autonomous Driving (AD) based on Online Model chec
 
 In this repository, you can find:
 
+- [Supplementary Material document](supplementary-material.pdf) to our paper.
 - Eight Reinforcement Learning (RL) agents: `DQN-Single`, `DQN-Single-Adversary`, `DQN`, `DQN-Adversary`, `PPO-Single`, `PPO-Single-Adversary`, `PPO`, `PPO-Adversary` and the trained models in folders `highway_{dqn/ppo}` and `single-lane/highway_{dqn/ppo}`.
 
 - A formal model (`vehicle.maude` and `fmodel.maude`), specifying the environment's state  (e.g., the status of the NPC and ego vehicles).
